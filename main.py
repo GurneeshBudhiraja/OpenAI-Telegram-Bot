@@ -55,13 +55,6 @@ def userMessage(update: Update, context: CallbackContext):
                 update.message.reply_text(
                     "Something went wrong. Please try again later."
                 )
-        elif update.message.photo:
-            # print(f"photo is: {update.message}")
-            name = update.message.chat.first_name
-            data = update.message
-            image_urls = [photo["file_id"] for photo in data["photo"]]
-            print(image_urls)
-
         else:
             print("Unsupported format.")
             update.message.reply_text(
