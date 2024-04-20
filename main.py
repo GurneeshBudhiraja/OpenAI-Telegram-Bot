@@ -29,12 +29,10 @@ logger = logging.getLogger(__name__)
 def userMessage(update: Update, context: CallbackContext):
     try:
         if update.message.text:
-            name=update.message.chat.first_name
+            name = update.message.chat.first_name
             message = update.message.text.strip()
             print(f"Message from {name}: {message}")
-            response = chatComplete(
-                message=message, name=name
-            )
+            response = chatComplete(message=message, name=name)
             print(f"Response: {response}")
             update.message.reply_text(response)
         # for voice messages
@@ -48,7 +46,7 @@ def userMessage(update: Update, context: CallbackContext):
             if response.status_code == 200:
                 with open(file_name, "wb") as f:
                     f.write(response.content)
-                    whisperReply = whisperModel(audiofile=file_name,name=name)
+                    whisperReply = whisperModel(audiofile=file_name, name=name)
                     os.remove(file_name)
                     print(f"Whisper Reply: {whisperReply}")
                     update.message.reply_text(whisperReply)
@@ -61,7 +59,7 @@ def userMessage(update: Update, context: CallbackContext):
             # print(f"photo is: {update.message}")
             name = update.message.chat.first_name
             data = update.message
-            image_urls = [photo['file_id'] for photo in data['photo']]
+            image_urls = [photo["file_id"] for photo in data["photo"]]
             print(image_urls)
 
         else:
