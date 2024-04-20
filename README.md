@@ -10,7 +10,7 @@ The OpenAI Q&A Telegram Bot is an intelligent chatbot that can answer your quest
 
 ## How to Use
 
-1. **Start the Bot**: Begin a conversation with the bot by searching for [one_AIbot](https://t.me/one_AIbot) in Telegram and starting a chat.
+1. **Start the Bot**: Begin a conversation with the bot by searching for [one_AIbot](https://t.me/one_AIbot) on Telegram and starting a chat.
 2. **Send Text Questions**: Type your questions directly as text messages to receive answers instantly.
 3. **Record Audio Questions**: Use the voice recording feature in Telegram to send audio questions. The bot will transcribe and respond.
 
