@@ -43,7 +43,7 @@ def userMessage(update: Update, context: CallbackContext):
                     whisperReply = whisperModel(audiofile=file_name, name=name)
                     os.remove(file_name)
                     print(f"Whisper Reply: {whisperReply}")
-                    update.message.reply_text(whisperReply)
+                    update.message.reply_audio(whisperReply)
             else:
                 os.remove(file_name)
                 update.message.reply_text(

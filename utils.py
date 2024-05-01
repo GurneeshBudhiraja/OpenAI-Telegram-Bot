@@ -1,6 +1,8 @@
 import os
 from openai import OpenAI
 from dotenv import load_dotenv
+from pathlib import Path
+from datetime import datetime
 
 load_dotenv()
 client = OpenAI(
@@ -8,13 +10,12 @@ client = OpenAI(
     api_key=os.getenv("OPENAI_KEY"),
 )
 
-
-def chatComplete(message: str, name: str):
+# Function for chat completion
+def chatComplete(message: str, name: str, voiceOutput:bool = False):
     try:
         if not message:
             return
         else:
-
             completion = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
@@ -27,11 +28,19 @@ def chatComplete(message: str, name: str):
                     {"role": "user", "content": f"{message}"},
                 ],
             )
-            return completion.choices[0].message.content
+            chatTranscript = completion.choices[0].message.content
+            if not voiceOutput:
+                return chatTranscript
+            else:
+                response = text2Speech(chatTranscript, name)
+                if not response:
+                    return "Something went wrong. Please try again later."
+                print("Voice output generated successfully...")
+                return response
     except Exception as e:
         print(e)
 
-
+# Function to transcribe the audio file
 def whisperModel(audiofile, name):
     try:
         audio_file = open(audiofile, "rb")
@@ -40,10 +49,36 @@ def whisperModel(audiofile, name):
         )
         voiceTranscription = transcript.text
         print(f"Message from {name}: {voiceTranscription}")
-        return chatComplete(message=voiceTranscription, name=name)
+        return chatComplete(message=voiceTranscription, name=name, voiceOutput=True)
     except Exception as e:
         return e
 
+# Function to convert text to speech
+def text2Speech(name,chatTranscript:str =""):
+    try:
+        if not chatTranscript:
+            return "Something went wrong. Please try again later."
+        
+        cwd = os.getcwd()
+        timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        speech_file_name = f"{name}_{timestamp}.mp3"
+
+        speech_file_path = os.path.join(cwd, speech_file_name)
+        response = OpenAI.Audio.create(
+        model="tts-1",
+        voice="nova",
+        input=chatTranscript
+        )
+
+        # Save the speech audio to the specified file path
+        with open(speech_file_path, "wb") as f:
+            f.write(response.data)
+        print(f"Speech file saved at {speech_file_path}")
+        return speech_file_path
+
+        
+    except Exception as e:
+        return e
 
 def main():
     return
