@@ -23,14 +23,18 @@ logger = logging.getLogger(__name__)
 def userMessage(update: Update, context: CallbackContext):
     try:
         if update.message.text:
+            update.message.reply_text("Processing your message📝...")
             name = update.message.chat.first_name
             message = update.message.text.strip()
             print(f"Message from {name}: {message}")
+
+
             response = chatComplete(message=message, name=name)
             print(f"Response: {response}")
             update.message.reply_text(response)
         # for voice messages
         elif update.message.voice:
+            update.message.reply_text("Processing your voice message🎙...")
             name = update.message.chat.first_name
             voice = update.message.voice
             voice_file = voice.get_file()
@@ -43,7 +47,9 @@ def userMessage(update: Update, context: CallbackContext):
                     whisperReply = whisperModel(audiofile=file_name, name=name)
                     os.remove(file_name)
                     print(f"Whisper Reply: {whisperReply}")
-                    update.message.reply_audio(whisperReply)
+                    update.message.reply_audio(audio=open(f"{whisperReply}", "rb"))
+                    os.remove(whisperReply)
+                    print("file removed successfully...")
             else:
                 os.remove(file_name)
                 update.message.reply_text(
@@ -51,13 +57,10 @@ def userMessage(update: Update, context: CallbackContext):
                 )
         else:
             print("Unsupported format.")
-            update.message.reply_text(
-                "I'm sorry, This format is not supported at the moment."
-            )
+            update.message.reply_animation("https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2Q3cDI0ZjUwdWh6Mmx0OXB6Y2pyZ2JpNGh0dGNld2JiaGRhdjYwMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YQAuKJ7wf68qBHPw6Y/giphy.gif",height=25,width=25,caption="Only text and audio input are supported. ⚠️")
     except Exception as e:
         print(e)
-        update.message.reply_text("Something went wrong. Please try again later.")
-
+        update.message.reply_animation("https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdThpeHJneDU5Z3pmbjRnZWd0MnFrdXVyOGFrMDA2Mmt2eXYwa2M1dSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26u6bnal23NhnIoZG/giphy.gif",caption="Something went wrong. Please try again later. ❌")
 
 def main():
     updater = Updater(telegramToken)
