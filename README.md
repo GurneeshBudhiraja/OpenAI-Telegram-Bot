@@ -1,6 +1,6 @@
-# OpenAI Telegram Bot 🤖
+# ChatGPT Telegram Bot 🤖
 
-The OpenAI Q&A Telegram Bot is an intelligent chatbot that can answer your questions sent through text messages or recorded audio. Powered by OpenAI's API, the bot provides accurate responses and even transcribes speech to ensure seamless communication.
+The ChatGPT Q&A Telegram Bot is an intelligent chatbot that can answer your questions sent through text messages or recorded audio. Powered by OpenAI's API, the bot provides accurate responses and even transcribes speech to ensure seamless communication.
 
 ## Features
 - **Text-to-Text Question Answering**: Send text questions to the bot, and it will provide relevant answers.
